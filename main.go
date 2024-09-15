@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-
 	http.HandleFunc("/users/1", handlers.GetUserHandler)
 
 	http.HandleFunc("/ping", handlers.GetPingHandler)
