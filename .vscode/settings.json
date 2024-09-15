@@ -1,3 +1,5 @@
 {
-  "CodeGPT.apiKey": "LM Studio"
+  "CodeGPT.apiKey": "LM Studio",
+  "go.lintTool": "golangci-lint",
+  "go.lintFlags": ["--fast"]
 }

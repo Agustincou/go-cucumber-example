@@ -11,17 +11,19 @@ type User struct {
 	Name string `json:"name"`
 }
 
-func GetPingHandler(w http.ResponseWriter, r *http.Request) {
+func GetPingHandler(w http.ResponseWriter, _ *http.Request) {
 	w.WriteHeader(http.StatusOK)
+
 	fmt.Fprintf(w, "pong")
 }
 
-func GetUserHandler(w http.ResponseWriter, r *http.Request) {
+func GetUserHandler(w http.ResponseWriter, _ *http.Request) {
 	user := User{
 		ID:   1,
 		Name: "Jhon Doe",
 	}
 
 	w.Header().Set("Content-Type", "application/json")
+
 	json.NewEncoder(w).Encode(user)
 }

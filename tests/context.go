@@ -14,12 +14,16 @@ import (
 )
 
 type _APIContainerCtxKey struct{} //testcontainers.Container
-type _APIEndpointCtxKey struct{}  //string
+
+type _APIEndpointCtxKey struct{} //string
+
 type _responseBodyCtxKey struct{} //[]byte
+
 type _responseCodeCtxKey struct{} //int
 
 func tearDownScenario(ctx context.Context) error {
 	apiContainer, ok := ctx.Value(_APIContainerCtxKey{}).(testcontainers.Container)
+
 	if !ok || apiContainer == nil {
 		return fmt.Errorf("API container not found in context")
 	}
@@ -57,16 +61,20 @@ func givenAPIRunning(ctx context.Context) (context.Context, error) {
 	//containerInfo, _ := apiContainer.Inspect(ctx)
 
 	var host string
+
 	var port nat.Port
+
 	maxRetries := 10
 	for i := 0; i < maxRetries; i++ {
 		host, err = apiContainer.Host(ctx)
 		if err == nil {
 			port, err = apiContainer.MappedPort(ctx, "8080")
+
 			if err == nil {
 				break
 			}
 		}
+
 		log.Printf("Retrying to get container info (attempt %d/%d)...", i+1, maxRetries)
 		time.Sleep(2 * time.Second)
 	}
@@ -85,19 +93,22 @@ func givenAPIRunning(ctx context.Context) (context.Context, error) {
 
 func waitForPingEndpoint(apiEndpoint string) error {
 	timeout := 10 * time.Second
-	start := time.Now()
 
+	start := time.Now()
 	for time.Since(start) < timeout {
 		resp, err := http.Get(apiEndpoint + "/ping")
 		if err != nil {
 			log.Printf("Error checking /ping endpoint: %v \n", err)
 		} else {
 			defer resp.Body.Close()
+
 			if resp.StatusCode == http.StatusOK {
 				return nil // Endpoint disponible y correcto
 			}
+
 			fmt.Println("api response", resp.StatusCode)
 		}
+
 		time.Sleep(2 * time.Second)
 	}
 

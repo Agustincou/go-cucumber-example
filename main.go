@@ -9,6 +9,7 @@ import (
 
 func main() {
 	http.HandleFunc("/users/1", handlers.GetUserHandler)
+
 	http.HandleFunc("/ping", handlers.GetPingHandler)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
