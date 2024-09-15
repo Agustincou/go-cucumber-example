@@ -2,7 +2,11 @@ name: PR Workflow
 
 on:
   workflow_dispatch:
-
+    inputs:
+      target-branch:
+        description: "Branch name to run on"
+        required: true
+        default: main
   pull_request:
     branches:
       - main
@@ -12,5 +16,19 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.target-branch }}
+
+      - name: Setup Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: "1.21"
+
+      - name: Go mod tidy
+        run: |
+          go mod tidy
+
       - name: Golangci-lint
         uses: golangci/golangci-lint-action@v6.1.0
